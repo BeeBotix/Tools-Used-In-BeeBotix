@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beebotix Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #080808;
+  --surf:     #0f0f0f;
+  --surf2:    #141414;
+  --surf3:    #1c1c1c;
+  --b1:       rgba(255,255,255,0.06);
+  --b2:       rgba(255,255,255,0.11);
+  --b3:       rgba(255,255,255,0.20);
+  --text:     #f0f0f0;
+  --muted:    #6e6e6e;
+  --muted2:   #3a3a3a;
+  --mono:     'DM Mono', monospace;
+  --disp:     'Syne', sans-serif;
+  --body:     'DM Sans', sans-serif;
+  --wrap:     1080px;
+  --px:       2.5rem;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ---- NAV ---- */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 56px;
+  background: rgba(8,8,8,0.9);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--b1);
+  display: flex; align-items: center;
+}
+.nav-inner {
+  width: 100%; max-width: var(--wrap);
+  margin: 0 auto; padding: 0 var(--px);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 9px;
+  text-decoration: none;
+}
+.nav-logo {
+  width: 26px; height: 26px;
+  border: 1px solid var(--b3);
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.nav-logo svg { width: 13px; height: 13px; }
+.nav-name {
+  font-family: var(--disp);
+  font-size: 14px; font-weight: 800;
+  color: var(--text); letter-spacing: 0.01em;
+}
+.nav-right {
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-pill {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--muted); letter-spacing: 0.06em;
+  border: 1px solid var(--b2); border-radius: 3px;
+  padding: 2px 8px; white-space: nowrap;
+}
+.nav-count {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--muted2); letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* ---- WRAPPER ---- */
+.wrap {
+  width: 100%; max-width: var(--wrap);
+  margin: 0 auto; padding: 0 var(--px);
+}
+
+/* ---- HERO ---- */
+.hero {
+  padding: 128px 0 72px;
+}
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 10.5px;
+  color: var(--muted); letter-spacing: 0.14em;
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 1.5rem;
+}
+.hero-eyebrow::before {
+  content: ''; display: block;
+  width: 22px; height: 1px; background: var(--muted2);
+  flex-shrink: 0;
+}
+.hero-heading {
+  font-family: var(--disp);
+  font-size: clamp(44px, 6.5vw, 80px);
+  font-weight: 800; line-height: 0.96;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+}
+.hero-heading em {
+  font-style: normal;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.25);
+}
+.hero-sub {
+  font-size: 15px; font-weight: 300;
+  color: var(--muted); max-width: 420px;
+  line-height: 1.75;
+}
+
+/* ---- SECTION DIVIDER ---- */
+.section-header {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 2.5rem 0 1.75rem;
+}
+.section-line { flex: 1; height: 1px; background: var(--b2); }
+.section-label {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--muted2); letter-spacing: 0.12em;
+  text-transform: uppercase; white-space: nowrap;
+}
+
+/* ---- GRID ---- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--b2);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--b1);
+  gap: 1px;
+  margin-bottom: 5rem;
+}
+
+/* ---- CARD ---- */
+.card {
+  background: var(--surf);
+  display: flex; flex-direction: column;
+  padding: 1.75rem;
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.18s;
+  min-height: 220px;
+}
+.card:hover { background: var(--surf2); }
+.card:hover .card-arrow { transform: translate(3px,-3px); opacity: 0.7; }
+.card:hover .card-icon-box { border-color: var(--b3); }
+.card.disabled { cursor: default; opacity: 0.38; }
+.card.disabled:hover { background: var(--surf); }
+.card.disabled:hover .card-arrow { transform: none; opacity: 0.3; }
+.card.disabled:hover .card-icon-box { border-color: var(--b2); }
+
+.card-head {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 8px;
+  margin-bottom: 1.1rem;
+}
+.card-icon-box {
+  width: 42px; height: 42px; flex-shrink: 0;
+  border: 1px solid var(--b2); border-radius: 9px;
+  background: var(--surf3);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.18s;
+}
+.card-icon-box svg { width: 19px; height: 19px; }
+.card-arrow {
+  width: 16px; height: 16px; flex-shrink: 0;
+  color: var(--muted); opacity: 0.3;
+  transition: transform 0.18s, opacity 0.18s;
+  margin-top: 2px;
+}
+
+.card-cat {
+  font-family: var(--mono); font-size: 9px;
+  color: var(--muted2); letter-spacing: 0.1em;
+  text-transform: uppercase; margin-bottom: 5px;
+}
+.card-title {
+  font-family: var(--disp); font-size: 16px; font-weight: 800;
+  color: var(--text); letter-spacing: -0.01em;
+  line-height: 1.2; margin-bottom: 7px;
+}
+.card-desc {
+  font-size: 12.5px; font-weight: 300;
+  color: var(--muted); line-height: 1.65;
+  flex: 1;
+}
+
+.card-foot {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--b1);
+  gap: 8px;
+}
+.card-status {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 9.5px;
+  letter-spacing: 0.06em;
+}
+.dot {
+  width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+}
+.dot-live { background: #999; }
+.dot-soon { background: var(--muted2); }
+.label-live { color: #888; }
+.label-soon { color: var(--muted2); }
+.card-slug {
+  font-family: var(--mono); font-size: 9px;
+  color: var(--muted2); letter-spacing: 0.02em;
+  white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 160px;
+  flex-shrink: 1;
+}
+
+/* ---- FOOTER ---- */
+footer {
+  border-top: 1px solid var(--b1);
+  padding: 1.5rem 0;
+}
+.footer-inner {
+  width: 100%; max-width: var(--wrap);
+  margin: 0 auto; padding: 0 var(--px);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem;
+}
+.footer-brand {
+  font-family: var(--disp); font-size: 12px; font-weight: 800;
+  color: var(--muted2); letter-spacing: 0.03em;
+}
+.footer-url {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--muted2); letter-spacing: 0.05em;
+}
+
+/* ---- ANIMATIONS ---- */
+@keyframes up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-eyebrow { animation: up 0.55s ease both; }
+.hero-heading  { animation: up 0.55s 0.07s ease both; }
+.hero-sub      { animation: up 0.55s 0.14s ease both; }
+.section-header{ animation: up 0.55s 0.2s  ease both; }
+.grid          { animation: up 0.55s 0.26s ease both; }
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+  :root { --px: 1.5rem; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .nav-count { display: none; }
+}
+
+@media (max-width: 600px) {
+  :root { --px: 1.1rem; }
+  .hero { padding: 100px 0 56px; }
+  .grid { grid-template-columns: 1fr; border-radius: 10px; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .nav-pill { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="#">
+      <div class="nav-logo">
+        <svg viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0.75" y="0.75" width="4.75" height="4.75" rx="0.9" fill="white" opacity="0.9"/>
+          <rect x="7.5"  y="0.75" width="4.75" height="4.75" rx="0.9" fill="white" opacity="0.5"/>
+          <rect x="0.75" y="7.5"  width="4.75" height="4.75" rx="0.9" fill="white" opacity="0.5"/>
+          <rect x="7.5"  y="7.5"  width="4.75" height="4.75" rx="0.9" fill="white" opacity="0.2"/>
+        </svg>
+      </div>
+      <span class="nav-name">Beebotix</span>
+    </a>
+    <div class="nav-right">
+      <span class="nav-pill">tools.beebotix.com</span>
+      <span class="nav-count" id="nav-count"></span>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="hero-eyebrow">Beebotix — Tool Suite</div>
+    <h1 class="hero-heading">Built for<br><em>real work.</em></h1>
+    <p class="hero-sub">A growing collection of utilities built and used by Beebotix. Purpose-built, no accounts, no fluff.</p>
+  </section>
+
+  <div class="section-header">
+    <div class="section-line"></div>
+    <span class="section-label">All Tools</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="grid" id="tools-grid"></div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-brand">Beebotix</span>
+    <span class="footer-url">tools.beebotix.com</span>
+  </div>
+</footer>
+
+<script>
+/*
+  ==============================================================
+  TOOL REGISTRY — add new tools here, one object per tool.
+
+  Fields:
+    id          unique string id
+    title       display name
+    category    short label (e.g. "Display", "Dev", "Design")
+    description 1-2 sentence description shown on the card
+    url         full URL when hosted (used for the card link)
+    slug        short path shown on the card  e.g. "/toolname.html"
+    status      "live" or "soon"
+    icon        raw SVG string (20x20 viewBox recommended)
+
+  To add a new tool: copy the TEMPLATE block below, fill it in,
+  and paste it into the TOOLS array. The page renders automatically.
+  ==============================================================
+*/
+var TOOLS = [
+
+  /* ---- LIVE TOOLS ---- */
+  {
+    id:          "kiosk-screen-preview",
+    title:       "Kiosk Screen Preview",
+    category:    "Display",
+    description: "Simulate any screen resolution in your browser. Preview how a webpage looks at exact pixel dimensions in kiosk or fullscreen mode — no physical device needed.",
+    url:         "https://tools.beebotix.com/kioskscreenpreview.html",
+    slug:        "/kioskscreenpreview.html",
+    status:      "live",
+    icon:        '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1.5" y="3" width="17" height="11" rx="2" stroke="white" stroke-width="1.4"/><path d="M7 14v3M13 14v3M5 17h10" stroke="white" stroke-width="1.4" stroke-linecap="round"/><rect x="4" y="5.5" width="5" height="5" rx="0.75" fill="white" fill-opacity="0.2"/></svg>'
+  },
+
+  /* ---- TEMPLATE — copy and fill in to add a new tool ----
+  {
+    id:          "your-tool-id",
+    title:       "Tool Name",
+    category:    "Category",
+    description: "One or two sentences about what this tool does.",
+    url:         "https://tools.beebotix.com/yourpage.html",
+    slug:        "/yourpage.html",
+    status:      "live",
+    icon:        '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">YOUR PATHS HERE</svg>'
+  },
+  ---- END TEMPLATE ---- */
+
+  /* ---- PLACEHOLDER ---- */
+  {
+    id:          "coming-soon-1",
+    title:       "More coming soon",
+    category:    "Soon",
+    description: "New tools are added as they are built and tested.",
+    url:         null,
+    slug:        null,
+    status:      "soon",
+    icon:        '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="7" stroke="white" stroke-width="1.4" stroke-dasharray="3 2.5"/><path d="M10 6.5V10l2.5 2" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>'
+  }
+
+];
+
+/* ---- Render ---- */
+var arrowSVG = '<svg class="card-arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 12.5L12.5 3.5m0 0H6m6.5 0V10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+var grid = document.getElementById('tools-grid');
+var liveCount = 0;
+
+TOOLS.forEach(function(t) {
+  var live = t.status === 'live';
+  if (live) liveCount++;
+
+  var el = document.createElement(live ? 'a' : 'div');
+  el.className = 'card' + (live ? '' : ' disabled');
+  if (live && t.url) el.href = t.url;
+
+  el.innerHTML =
+    '<div class="card-head">' +
+      '<div class="card-icon-box">' + t.icon + '</div>' +
+      (live ? arrowSVG : '') +
+    '</div>' +
+    '<div class="card-cat">' + t.category + '</div>' +
+    '<div class="card-title">' + t.title + '</div>' +
+    '<div class="card-desc">'  + t.description + '</div>' +
+    '<div class="card-foot">' +
+      '<div class="card-status">' +
+        '<div class="dot dot-' + t.status + '"></div>' +
+        '<span class="label-' + t.status + '">' + (live ? 'Live' : 'Coming soon') + '</span>' +
+      '</div>' +
+      (t.slug ? '<span class="card-slug">' + t.slug + '</span>' : '') +
+    '</div>';
+
+  grid.appendChild(el);
+});
+
+document.getElementById('nav-count').textContent = liveCount + ' tool' + (liveCount !== 1 ? 's' : '') + ' live';
+</script>
+</body>
+</html>
